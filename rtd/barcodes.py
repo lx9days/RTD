@@ -312,7 +312,8 @@ def rtd1(cl1, cl2, pdist_device = 'cuda:0'):
 def rtd(cl1, cl2, pdist_device = 'cuda:0', trials = 10, batch = 500):
 
     assert cl1.shape[0] == cl2.shape[0]
-    batch = min(batch, cl1.shape[0])
+    # batch = min(batch, cl1.shape[0])
+    batch = cl1.shape[0]
 
     rtd_avg = 0
     
