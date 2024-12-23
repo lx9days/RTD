@@ -70,20 +70,25 @@ def barc2array(barc):
         
     return arr
    
-def calc_embed_dist(a, b, dim = 1, pdist_device = 'cuda:0', verbose = False, norm = 'quantile', metric = 'euclidean', use_max = False, fast = False):
+def calc_embed_dist(a, b, inputType='node', dim = 1, pdist_device = 'cuda:0', verbose = False, norm = 'quantile', metric = 'euclidean', use_max = False, fast = False):
     
     n = a.shape[0]
-    
-    if pdist_device == 'cpu':
-        if verbose:
-            print('pdist on cpu start')
-        r1 = pairwise_distances(a, a, n_jobs = 40, metric = metric)
-        r2 = pairwise_distances(b, b, n_jobs = 40, metric = metric)
+    if inputType == 'distance':
+        r1 = a
+        r2 = b
+        print(r1)
+        print(r2)
     else:
-        if verbose:
-            print('pdist on gpu start')
-        r1 = pdist_gpu(a, a, device = pdist_device)
-        r2 = pdist_gpu(b, b, device = pdist_device)
+        if pdist_device == 'cpu':
+            if verbose:
+                print('pdist on cpu start')
+            r1 = pairwise_distances(a, a, n_jobs = 40, metric = metric)
+            r2 = pairwise_distances(b, b, n_jobs = 40, metric = metric)
+        else:
+            if verbose:
+                print('pdist on gpu start')
+            r1 = pdist_gpu(a, a, device = pdist_device)
+            r2 = pdist_gpu(b, b, device = pdist_device)
     
     if norm == 'median':
         r1 = r1 / np.median(r1)
