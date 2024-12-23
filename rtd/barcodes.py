@@ -71,19 +71,12 @@ def barc2array(barc):
     return arr
 def happy():
     print("happy")   
-def calc_embed_dist(a, b, inputType='1distance', dim = 1, pdist_device = 'cpu', verbose = False, norm = 'quantile', metric = 'euclidean', use_max = False, fast = False):
+def calc_embed_dist(a, b, inputType='distance', dim = 1, pdist_device = 'cpu', verbose = False, norm = 'quantile', metric = 'euclidean', use_max = False, fast = False):
 
     n = a.shape[0]
-    if inputType == '1distance':
+    if inputType == 'distance':
         r1 = a
-        if pdist_device == 'cpu':
-            if verbose:
-                print('pdist on cpu start')
-            r2 = pairwise_distances(b, b, n_jobs = 40, metric = metric)
-        else:
-            if verbose:
-                print('pdist on gpu start')
-            r2 = pdist_gpu(b, b, device = pdist_device)
+        r2 = b
     else:
         if pdist_device == 'cpu':
             if verbose:
