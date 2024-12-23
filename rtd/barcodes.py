@@ -69,7 +69,8 @@ def barc2array(barc):
         arr.append(res)
         
     return arr
-   
+def happy():
+    print("happy")   
 def calc_embed_dist(a, b, inputType='lx', dim = 1, pdist_device = 'cpu', verbose = False, norm = 'quantile', metric = 'euclidean', use_max = False, fast = False):
     print(a)
     n = a.shape[0]
