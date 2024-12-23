@@ -96,8 +96,8 @@ def calc_embed_dist(a, b, inputType='1distance', dim = 1, pdist_device = 'cpu', 
             r1 = pdist_gpu(a, a, device = pdist_device)
             r2 = pdist_gpu(b, b, device = pdist_device)
     
-    print(r1)
-    print(r2)
+    print(r1.shape)
+    print(r2.shape)
     if norm == 'median':
         r1 = r1 / np.median(r1)
         r2 = r2 / np.median(r2)
