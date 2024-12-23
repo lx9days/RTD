@@ -71,26 +71,33 @@ def barc2array(barc):
     return arr
 def happy():
     print("happy")   
-def calc_embed_dist(a, b, inputType='lx', dim = 1, pdist_device = 'cpu', verbose = False, norm = 'quantile', metric = 'euclidean', use_max = False, fast = False):
-    print(a)
+def calc_embed_dist(a, b, inputType='1distance', dim = 1, pdist_device = 'cpu', verbose = False, norm = 'quantile', metric = 'euclidean', use_max = False, fast = False):
+
     n = a.shape[0]
-    # if inputType == 'distance':
-    #     r1 = a
-    #     r2 = b
-    #     print(r1)
-    #     print(r2)
-    # else:
-    if pdist_device == 'cpu':
-        if verbose:
-            print('pdist on cpu start')
-        r1 = pairwise_distances(a, a, n_jobs = 40, metric = metric)
-        r2 = pairwise_distances(b, b, n_jobs = 40, metric = metric)
+    if inputType == 'distance':
+        r1 = a
+        if pdist_device == 'cpu':
+            if verbose:
+                print('pdist on cpu start')
+            r2 = pairwise_distances(b, b, n_jobs = 40, metric = metric)
+        else:
+            if verbose:
+                print('pdist on gpu start')
+            r2 = pdist_gpu(b, b, device = pdist_device)
     else:
-        if verbose:
-            print('pdist on gpu start')
-        r1 = pdist_gpu(a, a, device = pdist_device)
-        r2 = pdist_gpu(b, b, device = pdist_device)
+        if pdist_device == 'cpu':
+            if verbose:
+                print('pdist on cpu start')
+            r1 = pairwise_distances(a, a, n_jobs = 40, metric = metric)
+            r2 = pairwise_distances(b, b, n_jobs = 40, metric = metric)
+        else:
+            if verbose:
+                print('pdist on gpu start')
+            r1 = pdist_gpu(a, a, device = pdist_device)
+            r2 = pdist_gpu(b, b, device = pdist_device)
     
+    print(r1)
+    print(r2)
     if norm == 'median':
         r1 = r1 / np.median(r1)
         r2 = r2 / np.median(r2)
