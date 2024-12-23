@@ -70,7 +70,7 @@ def barc2array(barc):
         
     return arr
    
-def calc_embed_dist(a, b, inputType='node', dim = 1, pdist_device = 'cpu', verbose = False, norm = 'quantile', metric = 'euclidean', use_max = False, fast = False):
+def calc_embed_dist(a, b, inputType='lx', dim = 1, pdist_device = 'cpu', verbose = False, norm = 'quantile', metric = 'euclidean', use_max = False, fast = False):
     print(a)
     n = a.shape[0]
     # if inputType == 'distance':
