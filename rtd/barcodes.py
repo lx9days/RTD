@@ -74,7 +74,7 @@ def happy():
 def calc_embed_dist(a, b, inputType='1distance', dim = 1, pdist_device = 'cpu', verbose = False, norm = 'quantile', metric = 'euclidean', use_max = False, fast = False):
 
     n = a.shape[0]
-    if inputType == 'distance':
+    if inputType == '1distance':
         r1 = a
         if pdist_device == 'cpu':
             if verbose:
