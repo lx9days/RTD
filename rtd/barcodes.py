@@ -70,25 +70,39 @@ def barc2array(barc):
         
     return arr
    
+
+def resolveData():
+
+    # 读取同文件夹下的 'tmp_sp.txt' 文件
+    filename = 'tmp_sp.txt'
+
+    # 使用 numpy.loadtxt 读取文件，假设数据以空格或制表符分隔
+    distance_matrix = np.loadtxt(filename)
+
+    # 打印读取的距离矩阵
+    print(distance_matrix)
+
 def calc_embed_dist(a, b, inputType='node', dim = 1, pdist_device = 'cuda:0', verbose = False, norm = 'quantile', metric = 'euclidean', use_max = False, fast = False):
     
     n = a.shape[0]
-    if inputType == 'distance':
+    # if inputType == 'distance':
+    #     r1 = a
+    #     r2 = b
+    #     print(r1)
+    #     print(r2)
+    # else:
+    if pdist_device == 'cpu':
+        if verbose:
+            print('pdist on cpu start')
+        # r1 = pairwise_distances(a, a, n_jobs = 40, metric = metric)
         r1 = a
-        r2 = b
-        print(r1)
-        print(r2)
+        r2 = pairwise_distances(b, b, n_jobs = 40, metric = metric)
     else:
-        if pdist_device == 'cpu':
-            if verbose:
-                print('pdist on cpu start')
-            r1 = pairwise_distances(a, a, n_jobs = 40, metric = metric)
-            r2 = pairwise_distances(b, b, n_jobs = 40, metric = metric)
-        else:
-            if verbose:
-                print('pdist on gpu start')
-            r1 = pdist_gpu(a, a, device = pdist_device)
-            r2 = pdist_gpu(b, b, device = pdist_device)
+        if verbose:
+            print('pdist on gpu start')
+        # r1 = pdist_gpu(a, a, device = pdist_device)
+        r1 = a
+        r2 = pdist_gpu(b, b, device = pdist_device)
     
     if norm == 'median':
         r1 = r1 / np.median(r1)
