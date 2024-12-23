@@ -310,9 +310,13 @@ def rtd(cl1, cl2, pdist_device = 'cuda:0', trials = 10, batch = 500):
     rtd_avg = 0
     
     for i in range(trials):
-        rnd_idx = list(range(cl1.shape[0]))
-        np.random.shuffle(rnd_idx)
-        rnd_idx = rnd_idx[:batch]
-        rtd_avg += rtd1(cl1[rnd_idx], cl2[rnd_idx], pdist_device = pdist_device)
+        # rnd_idx = list(range(cl1.shape[0]))
+        # np.random.shuffle(rnd_idx)
+        # rnd_idx = rnd_idx[:batch]
+        # rtd_avg += rtd1(cl1[rnd_idx], cl2[rnd_idx], pdist_device = pdist_device)
+        rnd_idx = np.random.choice(cl1.shape[0], batch, replace=False)  # 随机抽取500个点
+        cl1_subset = cl1[np.ix_(rnd_idx, rnd_idx)]  # 生成子矩阵
+        cl2_subset = cl2[np.ix_(rnd_idx, rnd_idx)]  # 同样处理cl2
+        rtd_avg += rtd1(cl1_subset, cl2_subset, pdist_device=pdist_device)
         
     return rtd_avg / trials
